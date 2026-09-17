@@ -1,0 +1,38 @@
+# **WebCraft 실시간 게임 서버 구현**
+
+숙련 주차 프로젝트
+
+## 필수 기능 구현 목록
+- [X] Lv 1. Docker로 MySQL과 Redis 설정
+- [ ] Lv 2. SQL을 JPA 인덱스로 표현하기
+- [ ] Lv 3. 요청 검증과 DTO: 플레이어 등록
+- [ ] Lv 4. 월드 생성
+- [ ] Lv 5. 채팅 저장과 내역 조회
+- [ ] Lv 6. 최근 채팅 조회 API 구현
+- [ ] Lv 7. WebSocket 연결과 사용자 식별
+- [ ] Lv 8. HandshakeInterceptor 등록
+- [ ] Lv 9. 월드별 WebSocket 세션 관리
+- [ ] Lv 10. Redis 접속 상태 관리
+- [ ] Lv 11. 메시지 라우팅과 Ping/Pong
+- [ ] Lv 12. 플레이어 이동 요청 처리
+- [ ] Lv 13. 채팅 요청 처리와 응답 구성
+- [ ] Lv 14. 같은 월드의 참여자에게 채팅 전송
+- [ ] Lv 15. 접속자 목록 조회
+
+## 도전 기능 구현 목록
+- [ ] Lv 16. 낙관적 락
+- [ ] Lv 17. 커서 페이지 조회
+- [ ] Lv 18. Redis 최근 채팅 캐시
+- [ ] Lv 19. Redis Lua로 채팅 전송 횟수 제한
+- [ ] Lv 20. 멀티 서버
+
+
+## 문답
+> Redis와 MySQL의 차이는 무엇인가요?
+> > ``
+
+> 채팅 기능에 SSE보다는 WebSocket을 더 선호하는 이유는 무엇인가요?
+> > ``
+
+> Pub/Sub에서 Publisher와 Subscriber는 각각 어떤 역할을 하나요?
+> > ``
