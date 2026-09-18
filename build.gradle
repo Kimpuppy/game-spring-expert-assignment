@@ -17,6 +17,13 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    mockitoAgent {
+        transitive = false
+        canBeConsumed = false
+    }
+}
+
 dependencies {
     implementation 'io.github.f-api:webcraft-engine:2.1.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -31,10 +38,12 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers:1.21.4'
     testRuntimeOnly 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    mockitoAgent 'org.mockito:mockito-core'
 }
 
 apply from: 'gradle/engine.gradle'
 
 tasks.named('test') {
     useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}", "-Xshare:off"
 }
