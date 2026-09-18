@@ -23,7 +23,7 @@ public class WorldSessionRegistry implements com.gameexpert.api.SessionRegistry 
             ConcurrentHashMap<String, Entry> sessions = current == null
                     ? new ConcurrentHashMap<>() : current;
             // TODO Lv 9: putIfAbsent()로 candidate를 등록하고, 새로 등록했으면 added를 true로 설정합니다.
-            boolean added = false;
+            boolean added = sessions.putIfAbsent(nicknameKey, candidate) == null;
             if (added) {
                 registered.set(candidate);
             }
@@ -47,12 +47,19 @@ public class WorldSessionRegistry implements com.gameexpert.api.SessionRegistry 
     }
 
     public Entry get(Long worldId, String nickname) {
+        String nicknameKey = key(nickname);
+        AtomicReference<Entry> getted = new AtomicReference<>();
         ConcurrentHashMap<String, Entry> sessions = worlds.get(worldId);
         if (sessions == null) {
             return null;
         }
         // TODO Lv 9: sessions에서 key(nickname)에 해당하는 연결을 반환합니다.
-        return null;
+        Entry current = sessions.get(nicknameKey);
+        if(current != null) {
+            getted.set(current);
+        }
+        // return getted.get(sessions.get(key(nickname))) 으로 간략화 할 수 있음
+        return getted.get();
     }
 
     public Collection<Entry> entries(Long worldId) {
