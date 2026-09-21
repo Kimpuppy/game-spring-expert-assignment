@@ -33,6 +33,9 @@
   - Docker Compose란?
     - 다수의 컨테이너가 함께 실행되는 환경에서 하나의 파일 내에 속성 등을 정의하여 다수의 컨테이너를 관리하기 위한 도구
 
+## 실행 결과
+<img width="640" height="360" alt="Image" src="https://github.com/user-attachments/assets/84382663-ae3b-428d-820a-b0da9c4bb4ea" />
+
 
 ## 문답
 > Redis와 MySQL의 차이는 무엇인가요?
