@@ -33,9 +33,93 @@
   - Docker Compose란?
     - 다수의 컨테이너가 함께 실행되는 환경에서 하나의 파일 내에 속성 등을 정의하여 다수의 컨테이너를 관리하기 위한 도구
 
+## 실행 방법
+사전 준비
+   - docker 실행 확인
+   - ```docker version```
+
+### 실행
+1. 실행 파일 생성
+   - ```./gradlew bootJar```
+2. 컨테이너 생성
+   - ```docker compose up -d --build```
+3. 실행 확인
+   - ```docker compose ps```
+코드를 수정 한 뒤에는 JAR 파일을 다시 만들고 이미지를 다시 빌드해야 반영이 된다.
+
+### 종료
+- ```docker compose stop```
+
+## API 명세
+
+### REST API
+| 메서드 | 경로 | 성공 | 설 |
+| :--- | :--- | :--- | :--- |
+| POST | /players | 201 | 플레이어 등록 |
+| GET | /worlds | 200 | 월드 목록 조회 |
+| POST | /worlds | 201 | 월드 생성 |
+| GET | /worlds/{worldId}/chats | 200 | 최근 채팅 조회 |
+| GET | /worlds/{worldId}/chats/history | 200 | 과거 채팅 커서 조회 |
+| WS | /ws/worlds/{worldId} | 101 | WebSocket 연결 |
+
+### ERROR
+| error | 상태 | 설명 |
+| :--- | :---: | :--- |
+| VALIDATION_FAILED | 400 | 필수 값 누락, 길이·패턴 위반 또는 잘못된 숫자 파라미터 |
+| INVALID_REQUEST_BODY | 400 | 잘못된 JSON, 알 수 없는 필드 또는 난이도 |
+| WORLD_NOT_FOUND | 404 | 존재하지 않는 월드 |
+| PLAYER_NOT_FOUND | 404 | 등록되지 않은 닉네임으로 월드 생성 |
+| DUPLICATE_NICKNAME | 409 | 이미 등록된 닉네임 |
+| WORLD_LIMIT_REACHED | 409 | 월드가 이미 3개인 상태에서 생성 |
+| INTERNAL_ERROR | 500 | 예기치 못한 서버 오류 |
+| WORLD_BASELINE_INITIALIZING | 503 | 서버 기동 직후 월드 준비가 끝나기 전 |
+
+## ERD
+```mermaid
+erDiagram
+    players {
+        bigint id PK
+        varchar_16 nickname UK
+        datetime created_at
+    }
+    worlds {
+        bigint id PK
+        varchar_30 name
+        bigint seed
+        enum difficulty
+        varchar_16 owner_nickname
+        bigint day_count
+        bigint world_time
+        bigint game_time_mc_ticks
+        int spawn_x
+        int spawn_y
+        int spawn_z
+        datetime created_at
+    }
+    chat_messages {
+        bigint id PK
+        bigint world_id FK
+        varchar_16 sender_nickname
+        varchar_200 content
+        datetime created_at
+    }
+    world_trial_sites {
+        bigint id PK
+        bigint revision
+        bigint world_id
+        bigint trial_id
+        int block_x
+        int block_y
+        int block_z
+    }
+    worlds ||--o{ chat_messages : "외래 키 제약"
+    worlds ||..o{ world_trial_sites : "식별자만 보유"
+    players ||..o{ chat_messages : "sender_nickname"
+    players ||..o{ worlds : "owner_nickname"
+```
+
 ## 실행 결과
 <img width="640" height="360" alt="Image" src="https://github.com/user-attachments/assets/84382663-ae3b-428d-820a-b0da9c4bb4ea" />
-
 
 ## 문답
 > Redis와 MySQL의 차이는 무엇인가요?
